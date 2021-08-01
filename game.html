@@ -6,23 +6,35 @@
 <canvas id="gameCanvas" width="400" height="400"></canvas>
 <script>
     var canvas , canvasContext;
-    
+
     window.onload = function() {
         canvas = document.getElementById('gameCanvas');
         canvasContext = canvas.getContext('2d');
+
+        document.addEventListener('keydown' , keypressed);
+        document.addEventListener('keyup' , keyreleased);
         
         setInterval(mainloop, 1000/50);
     }
-    
+    var defenderXpos = 0;
+    var playerYpos = 0;
+    var defenderXspeed = 5;
+    var playerYspeed = 4;
+    var PLAYER_SIZE = 20;
+    var DEFENDER_SIZE = 40;
+
+     
+
     function mainloop(){
-       colorRect(0,0,canvas.width,canvas.height,'black'); // bg 
+       colorRect(0,0,canvas.width,canvas.height,'black');
+       colorRect(0,0,20,20,'red'); // player 
     } // end func
-    
+
     function colorRect(x,y,w,h,c){
         canvasContext.fillStyle = c;
         canvasContext.fillRect(x,y,w,h);
-        
+
     } // end func
     </script>
 
-</body>
+</body> 
