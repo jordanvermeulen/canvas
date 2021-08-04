@@ -1,40 +1,111 @@
 <!doctype html>
+
+ 
+
 <head>
-<title>canvas Tutorial</title>
+    <title> Video Game</title>
 </head>
+
+ 
+
 <body>
-<canvas id="gameCanvas" width="400" height="400"></canvas>
-<script>
-    var canvas , canvasContext;
+    <canvas id="gameCanvas" width="900" height="720"></canvas>
+    <script>
+        var canvas, canvasContext;
+        window.onload = function() {
+            canvas = document.getElementById('gameCanvas');
+            canvasContext = canvas.getContext('2d');
 
-    window.onload = function() {
-        canvas = document.getElementById('gameCanvas');
-        canvasContext = canvas.getContext('2d');
+ 
 
-        document.addEventListener('keydown' , keypressed);
-        document.addEventListener('keyup' , keyreleased);
+            document.addEventListener('keyup', keyReleased);
+            document.addEventListener('keydown', keyPressed);
+
+ 
+
+            setInterval(mainloop, 1000 / 50);
+        }
+
+ 
+
+        var playerXpos = 0;
+        var playerYpos = 0;
+        var playerXspeed = 5;
+        var playerYspeed = 5;
+        const PlAYER_SIZE = 20;
+        var yVel = 0;
+
+ 
+
+        const SPACE = 32;
+        var spacePressed = false;
+
+        var object = new Image();
+        object.src = 'object.png';
+ 
+
+        function mainloop() {
+//            colorRect(0, 0, canvas.width, canvas.height, 'gray');
+            
+            colorRect(playerXpos, playerYpos, PlAYER_SIZE, PlAYER_SIZE, 'lime ');
+            drawImgs(object,0,0,50,100);
+            
+            playerMove();
+        } // end func
+
+ 
+
+        function colorRect(x, y, w, h, c) {
+            canvasContext.fillStyle = c;
+            canvasContext.fillRect(x, y, w, h);
+        } // end func
+
+        function drawImgs(src,x,y,w,h){
+            canvasContext.drawImage(src,x,y,w,h);
+        }
         
-        setInterval(mainloop, 1000/50);
-    }
-    var defenderXpos = 0;
-    var playerYpos = 0;
-    var defenderXspeed = 5;
-    var playerYspeed = 4;
-    var PLAYER_SIZE = 20;
-    var DEFENDER_SIZE = 40;
 
-     
+        function playerMove() {
+            playerYpos += yVel;
+            yVel += 0.2;
+            if (spacePressed)
+                yVel = -3;
+            playerXpos = canvas.width / 6;      
+            
+            if(playerYpos > canvas.height){
+               playerYpos = 0;
+            }
+        }   
+          //end func
+        function keyPressed(evt) {
+            console.log(evt.keyCode)
+            if (evt.keyCode == SPACE) {
+                spacePressed = true;
+                
+                 (evt.keyCode == 83) 
+                KeyPressed = true;
+//               alert('hola')
+            }
+            
+        }
+           //end func
+        function keyReleased(evt) {
+            if (evt.keyCode == SPACE) {
+                spacePressed = false;
 
-    function mainloop(){
-       colorRect(0,0,canvas.width,canvas.height,'black');
-       colorRect(0,0,20,20,'red'); // player 
-    } // end func
+ 
 
-    function colorRect(x,y,w,h,c){
-        canvasContext.fillStyle = c;
-        canvasContext.fillRect(x,y,w,h);
-
-    } // end func
+                 (evt.keyCode == 83) 
+                KeyPressed = false;
+               
+            }
+        }
+        
+          
+         
+      //end func
     </script>
 
-</body> 
+ 
+
+</body>
