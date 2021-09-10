@@ -41,16 +41,16 @@
         var spacePressed = false;
 
         var object = new Image();
-        object.src = 'object.png';
+        object.src = 'syringe.png';
         
         var BG = new Image() ;
-        BG.src = 'bg.jpg'
+        BG.src = '.jpg'
         function mainloop() {
 //            colorRect(0, 0, canvas.width, canvas.height, 'gray');
             
             drawImgs(BG,-100,0,canvas.width,canvas.height);
             colorRect(playerXpos, playerYpos, PlAYER_SIZE, PlAYER_SIZE, 'lime ');
-            drawImgs(object,0,0,200,300);
+            drawImgs(object,0,0,100,350);
             playerMove();
         } // end func
 
