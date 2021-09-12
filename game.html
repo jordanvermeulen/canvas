@@ -34,7 +34,7 @@
         var playerYspeed = 20;
         const PlAYER_HEIGHT = 170;
         const PlAYER_WIDTH = 90;
-        var yVel = 0;
+        var yVel = 1;
 
         
         var enemyXpos = 710;
@@ -59,14 +59,18 @@
         var BG = new Image() ;
         BG.src = 'Corona.png'
         
+        var thing = new Image();
+        thing.src = 'syringe 2.png'
+        
+        var images = [object,thing];
         
         function mainloop() {
 //            colorRect(0, 0, canvas.width, canvas.height, 'gray');
             
             drawImgs(BG,-100,0,canvas.width,canvas.height);
             drawImgs(virus,playerXpos, playerYpos, PlAYER_WIDTH, PlAYER_HEIGHT);
-            drawImgs(object,enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
-            drawImgs(object,enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
+            drawImgs(images[0],enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
+//            drawImgs(thing,enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
             playerMove();
             
             enemyMove();
