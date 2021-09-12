@@ -36,8 +36,17 @@
         const PlAYER_WIDTH = 90;
         var yVel = 0;
 
- 
+        
+        var enemyXpos = 710;
+        var enemyYpos = 0;
+        var enemyXspeed = 5;
+        const ENEMY_HEIGHT = 350;
+        const ENEMY_WIDTH = 100;
 
+        
+        
+        
+        
         const SPACE = 32;
         var spacePressed = false;
 
@@ -56,8 +65,11 @@
             
             drawImgs(BG,-100,0,canvas.width,canvas.height);
             drawImgs(virus,playerXpos, playerYpos, PlAYER_WIDTH, PlAYER_HEIGHT);
-            drawImgs(object,0,0,100,350);
+            drawImgs(object,enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
+            drawImgs(object,enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
             playerMove();
+            
+            enemyMove();
         } // end func
 
  
@@ -71,7 +83,19 @@
             canvasContext.drawImage(src,x,y,w,h);
         }
         
+        function enemyMove(){
+            
+            enemyXpos -= enemyXspeed;
+            
+            if( enemyXpos < 0){
+                enemyXpos = 710
+            }
+            
+        }
 
+        
+        
+        
         function playerMove() {
             playerYpos += yVel;
             yVel += 0.2;
