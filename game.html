@@ -31,8 +31,9 @@
         var playerXpos = 3;
         var playerYpos = 3;
         var playerXspeed = 5;
-        var playerYspeed = 5;
-        const PlAYER_SIZE = 20;
+        var playerYspeed = 20;
+        const PlAYER_HEIGHT = 170;
+        const PlAYER_WIDTH = 90;
         var yVel = 0;
 
  
@@ -43,13 +44,18 @@
         var object = new Image();
         object.src = 'syringe.png';
         
+        var virus = new Image();
+        virus.src = 'Xi-Jinping.png';
+        
         var BG = new Image() ;
-        BG.src = '.jpg'
+        BG.src = 'Corona.png'
+        
+        
         function mainloop() {
 //            colorRect(0, 0, canvas.width, canvas.height, 'gray');
             
             drawImgs(BG,-100,0,canvas.width,canvas.height);
-            colorRect(playerXpos, playerYpos, PlAYER_SIZE, PlAYER_SIZE, 'lime ');
+            drawImgs(virus,playerXpos, playerYpos, PlAYER_WIDTH, PlAYER_HEIGHT);
             drawImgs(object,0,0,100,350);
             playerMove();
         } // end func
