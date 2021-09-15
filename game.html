@@ -33,7 +33,7 @@
         var playerXspeed = 5;
         var playerYspeed = 20;
         const PlAYER_HEIGHT = 170;
-        const PlAYER_WIDTH = 90;
+        const PlAYER_WIDTH = 150;
         var yVel = 1;
 
         
@@ -41,10 +41,10 @@
         var enemyYpos = 0;
         var enemyXspeed = 5;
         const ENEMY_HEIGHT = 350;
-        const ENEMY_WIDTH = 100;
+        const ENEMY_WIDTH =100;
 
         
-        
+        var playerjump = -5;
         
         
         const SPACE = 32;
@@ -54,7 +54,7 @@
         object.src = 'syringe.png';
         
         var virus = new Image();
-        virus.src = 'Xi-Jinping.png';
+        virus.src = 'chinese.png';
         
         var BG = new Image() ;
         BG.src = 'Corona.png'
@@ -95,6 +95,13 @@
                 enemyXpos = 710
             }
             
+            if(
+            enemyYpos + ENEMY_HEIGHT + ENEMY_WIDTH > playerYpos && enemyYpos ){
+                
+                console.log('hit')
+            }
+            
+            
         }
 
         
@@ -104,7 +111,7 @@
             playerYpos += yVel;
             yVel += 0.2;
             if (spacePressed)
-                yVel = -3;
+                yVel = playerjump;
             playerXpos = canvas.width / 6;      
             
             if(playerYpos > canvas.height){
