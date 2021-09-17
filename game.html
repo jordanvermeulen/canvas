@@ -28,8 +28,8 @@
 
  
 
-        var playerXpos = 3;
-        var playerYpos = 3;
+        var playerXpos = 0;
+        var playerYpos = 1;
         var playerXspeed = 5;
         var playerYspeed = 20;
         const PlAYER_HEIGHT = 170;
@@ -95,8 +95,7 @@
                 enemyXpos = 710
             }
             
-            if(
-            enemyYpos + ENEMY_HEIGHT + ENEMY_WIDTH > playerYpos && enemyYpos ){
+            if( enemyYpos + ENEMY_HEIGHT + ENEMY_WIDTH > playerYpos && enemyYpos < playerYpos + PlAYER_HEIGHT + PlAYER_WIDTH ){
                 
                 console.log('hit')
             }
@@ -109,14 +108,19 @@
         
         function playerMove() {
             playerYpos += yVel;
-            yVel += 0.2;
+            yVel += 0.5;
             if (spacePressed)
                 yVel = playerjump;
             playerXpos = canvas.width / 6;      
             
             if(playerYpos > canvas.height){
-               playerYpos = 0;
+               alert ('u fucked it')   
+               playerYpos = 1;
             }
+            if(playerYpos < (canvas.height) - canvas.height){
+                alert('u fucked it again')
+                
+           }
         }   
           //end func
         function keyPressed(evt) {
