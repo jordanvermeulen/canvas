@@ -32,19 +32,19 @@
         var playerYpos = 1;
         var playerXspeed = 5;
         var playerYspeed = 20;
-        const PlAYER_HEIGHT = 170;
-        const PlAYER_WIDTH = 150;
+        const PlAYER_HEIGHT = 120;
+        const PlAYER_WIDTH = 110;
         var yVel = 1;
 
         
         var enemyXpos = 710;
-        var enemyYpos = 0;
+        var enemyYpos = -15;
         var enemyXspeed = 5;
         const ENEMY_HEIGHT = 350;
-        const ENEMY_WIDTH =100;
+        const ENEMY_WIDTH = 80;
 
         
-        var playerjump = -5;
+        var playerjump = -7;
         
         
         const SPACE = 32;
@@ -54,26 +54,38 @@
         object.src = 'syringe.png';
         
         var virus = new Image();
-        virus.src = 'chinese.png';
+        virus.src = 'covid.png';
         
         var BG = new Image() ;
         BG.src = 'Corona.png'
+        
+        var BGXspeed = 2;
+        var BGXpos2 = 0;
+        var BGXpos = 0;
+        var BGYpos = 0;
         
         var thing = new Image();
         thing.src = 'syringe 2.png'
         
         var images = [object,thing];
         
+        var settingUp = true;
+        
         function mainloop() {
 //            colorRect(0, 0, canvas.width, canvas.height, 'gray');
-            
-            drawImgs(BG,-100,0,canvas.width,canvas.height);
+            if(settingUp){
+                playerXpos = PlAYER_WIDTH * 2; 
+                settingUp = false;
+            }
+            drawImgs(BG, BGXpos, 0, canvas.width*2, canvas.height);
+            drawImgs(BG, BGXpos2, 0, canvas.width*2, canvas.height);
             drawImgs(virus,playerXpos, playerYpos, PlAYER_WIDTH, PlAYER_HEIGHT);
             drawImgs(images[0],enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
 //            drawImgs(thing,enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
             playerMove();
             
             enemyMove();
+            backgroundMove();
         } // end func
 
  
@@ -87,38 +99,49 @@
             canvasContext.drawImage(src,x,y,w,h);
         }
         
+        function backgroundMove(){
+            if(BGXpos + canvas.width < 0){
+                BGXpos = canvas.width;
+            }
+            if(BGXpos == 0){
+               BGXpos2 = canvas.width * .772;
+            }
+            BGXpos -= BGXspeed;
+            BGXpos2 -= BGXspeed;
+            
+        }
+        
         function enemyMove(){
             
             enemyXpos -= enemyXspeed;
             
             if( enemyXpos < 0){
-                enemyXpos = 710
+                enemyXpos = canvas.width
             }
             
-            if( enemyYpos + ENEMY_HEIGHT + ENEMY_WIDTH > playerYpos && enemyYpos < playerYpos + PlAYER_HEIGHT + PlAYER_WIDTH ){
+            if(enemyYpos + ENEMY_HEIGHT > playerYpos && enemyYpos < playerYpos + PlAYER_HEIGHT && enemyXpos + ENEMY_WIDTH / 2  > playerXpos && enemyXpos < playerXpos + PlAYER_WIDTH * 0.8 ){
                 
-                console.log('hit')
+                playerXpos = 0;
             }
             
             
         }
 
-        
+        var gravity = 0.5;
         
         
         function playerMove() {
             playerYpos += yVel;
-            yVel += 0.5;
+            yVel += gravity;
             if (spacePressed)
                 yVel = playerjump;
-            playerXpos = canvas.width / 6;      
+//                playerXpos = canvas.width / 6;      
             
-            if(playerYpos > canvas.height){
-               alert ('u fucked it')   
-               playerYpos = 1;
+            if(playerYpos + PlAYER_HEIGHT > canvas.height){
+                yVel = playerjump;
             }
             if(playerYpos < (canvas.height) - canvas.height){
-                alert('u fucked it again')
+                yVel = gravity;
                 
            }
         }   
