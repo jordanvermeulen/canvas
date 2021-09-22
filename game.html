@@ -9,10 +9,19 @@
  
 
 <body>
+    <audio id="sound">
+    <source src="sound.mp3">
+    </audio>
+    <audio id="sound3">
+    <source src="sound3.mp3">
+    </audio>
+<!--    sound-->
     <canvas id="gameCanvas" width="900" height="720"></canvas>
     <script>
+        
         var canvas, canvasContext;
         window.onload = function() {
+        
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
 
@@ -30,7 +39,7 @@
 
         var playerXpos = 0;
         var playerYpos = 1;
-        var playerXspeed = 5;
+        var playerXspeed = 3;
         var playerYspeed = 20;
         const PlAYER_HEIGHT = 120;
         const PlAYER_WIDTH = 110;
@@ -57,9 +66,15 @@
         virus.src = 'covid.png';
         
         var BG = new Image() ;
-        BG.src = 'Corona.png'
+        BG.src = 'Corona.png';
         
-        var BGXspeed = 2;
+        var End = new Image() ;
+        End.src = 'jacinda.png';
+        var EndXpos = 0;
+        var EndYpos = 0;
+        
+        
+        var BGXspeed = 1;
         var BGXpos2 = 0;
         var BGXpos = 0;
         var BGYpos = 0;
@@ -70,22 +85,29 @@
         var images = [object,thing];
         
         var settingUp = true;
+        var gameRun = true;
         
         function mainloop() {
 //            colorRect(0, 0, canvas.width, canvas.height, 'gray');
-            if(settingUp){
-                playerXpos = PlAYER_WIDTH * 2; 
-                settingUp = false;
+            if(gameRun){
+                
+                if(settingUp){
+                    playerXpos = PlAYER_WIDTH * 2; 
+                    settingUp = false;
+                }
+                drawImgs(BG, BGXpos, 0, canvas.width*2, canvas.height);
+                drawImgs(BG, BGXpos2, 0, canvas.width*2, canvas.height);
+                drawImgs(virus,playerXpos, playerYpos, PlAYER_WIDTH, PlAYER_HEIGHT);
+                drawImgs(images[0],enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
+    //            drawImgs(thing,enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
+                playerMove();
+
+                enemyMove();
+                backgroundMove();
             }
-            drawImgs(BG, BGXpos, 0, canvas.width*2, canvas.height);
-            drawImgs(BG, BGXpos2, 0, canvas.width*2, canvas.height);
-            drawImgs(virus,playerXpos, playerYpos, PlAYER_WIDTH, PlAYER_HEIGHT);
-            drawImgs(images[0],enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
-//            drawImgs(thing,enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
-            playerMove();
-            
-            enemyMove();
-            backgroundMove();
+            else {
+                drawImgs(End, EndXpos, EndYpos, canvas.width, canvas.height);
+            }
         } // end func
 
  
@@ -121,7 +143,10 @@
             
             if(enemyYpos + ENEMY_HEIGHT > playerYpos && enemyYpos < playerYpos + PlAYER_HEIGHT && enemyXpos + ENEMY_WIDTH / 2  > playerXpos && enemyXpos < playerXpos + PlAYER_WIDTH * 0.8 ){
                 
-                playerXpos = 0;
+//                playerXpos = 0;
+                   sound.play();
+                    gameRun = false;
+                sound3.play();
             }
             
             
