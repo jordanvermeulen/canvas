@@ -19,6 +19,11 @@
     <canvas id="gameCanvas" width="900" height="720"></canvas>
     <script>
         
+        
+        
+        
+        
+        
         var canvas, canvasContext;
         window.onload = function() {
         
@@ -36,7 +41,31 @@
         }
 
  
-
+        var userName = '';
+        while(userName == false || userName == null){
+            userName = prompt('what do you want your name to be?', 'bob')// asking for name
+            if(userName != null)
+                pass = true;
+        }
+        
+        var speed = 0;
+        
+        var difficulty = '';
+        var pass = false;
+        
+        while(pass == false){// until happy no exit loop}
+            difficulty = prompt('how hard do you want it?, easy, medium, hard', 'medium');
+            difficulty = difficulty.toLowerCase()
+            if(difficulty == 'easy' || difficulty == 'medium' || difficulty == 'hard'){
+                pass = true;
+                
+            }
+        }
+        
+        if(difficulty == 'easy'){
+            speed = 4;
+            
+        }
         var playerXpos = 0;
         var playerYpos = 1;
         var playerXspeed = 3;
@@ -52,7 +81,7 @@
         const ENEMY_HEIGHT = 350;
         const ENEMY_WIDTH = 80;
 
-        
+      
         var playerjump = -7;
         
         
@@ -60,7 +89,7 @@
         var spacePressed = false;
 
         var object = new Image();
-        object.src = 'syringe.png';
+        object.src = 'syringe2.png';
         
         var virus = new Image();
         virus.src = 'covid.png';
@@ -79,31 +108,41 @@
         var BGXpos = 0;
         var BGYpos = 0;
         
-        var thing = new Image();
-        thing.src = 'syringe 2.png'
+        var syringe = new Image();
+        syringe.src = 'syringe.png'
         
-        var images = [object,thing];
+        var images = [object,syringe];
+        
+
         
         var settingUp = true;
         var gameRun = true;
         
+        
+        var score = 0;
         function mainloop() {
-//            colorRect(0, 0, canvas.width, canvas.height, 'gray');
+
             if(gameRun){
                 
                 if(settingUp){
                     playerXpos = PlAYER_WIDTH * 2; 
+                    
+                    for(var i = 0; i < 10; i++){
+                        makenemy();
+                    }
+                    
                     settingUp = false;
                 }
                 drawImgs(BG, BGXpos, 0, canvas.width*2, canvas.height);
                 drawImgs(BG, BGXpos2, 0, canvas.width*2, canvas.height);
                 drawImgs(virus,playerXpos, playerYpos, PlAYER_WIDTH, PlAYER_HEIGHT);
-                drawImgs(images[0],enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
-    //            drawImgs(thing,enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
+//                drawImgs(images[0],enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
                 playerMove();
 
-                enemyMove();
+//                enemyMove();
                 backgroundMove();
+                drawEnemy();
+                moveEnemy();
             }
             else {
                 drawImgs(End, EndXpos, EndYpos, canvas.width, canvas.height);
@@ -122,10 +161,10 @@
         }
         
         function backgroundMove(){
-            if(BGXpos + canvas.width < 0){
+            if(BGXpos + canvas.width < (canvas.width) - canvas.width){
                 BGXpos = canvas.width;
             }
-            if(BGXpos == 0){
+            if(BGXpos == (canvas.width) - canvas.width){
                BGXpos2 = canvas.width * .772;
             }
             BGXpos -= BGXspeed;
@@ -137,7 +176,7 @@
             
             enemyXpos -= enemyXspeed;
             
-            if( enemyXpos < 0){
+            if( enemyXpos < (canvas.width) - canvas.width - 40){
                 enemyXpos = canvas.width
             }
             
@@ -147,6 +186,7 @@
                    sound.play();
                     gameRun = false;
                 sound3.play();
+                console.log('score is' + score)
             }
             
             
@@ -193,6 +233,72 @@
                 KeyPressed = false;
                
             }
+        }
+         var enemyCounter = 0;
+        var setCounter = 0;
+        var enemies = [];
+        
+        
+        var needleCount = 0; 
+        
+        
+    function makenemy(){
+        const ENEMY_HEIGHT = 350 / 2;
+        const ENEMY_WIDTH = 80 / 2;
+        var spacer = Math.floor(Math.random()*(canvas.height * 0.2));
+        var enemyXpos = canvas.width + needleCount * (ENEMY_WIDTH * 2);
+        var enemyYpos = 0;
+        
+        if(needleCount%2 == 0){
+            enemyYpos = 0 + spacer; 
+        } else {
+            enemyYpos = canvas.height - ENEMY_HEIGHT - spacer;
+        }
+        
+        var enemyXspeed = 5;
+        
+        var enemy = {
+            enemyXpos: enemyXpos,
+            enemyYpos: enemyYpos,
+            ENEMY_WIDTH: ENEMY_WIDTH,
+            ENEMY_HEIGHT: ENEMY_HEIGHT,
+            enemyXspeed: enemyXspeed
+        }
+        
+        needleCount++;
+        
+        enemies.push(enemy);
+    }                
+            
+        function drawEnemy(){
+            enemies.forEach(function(e,i,array){
+                if(i%2 == 0){
+                    drawImgs(images[0],e.enemyXpos,e.enemyYpos,e.ENEMY_WIDTH,e.ENEMY_HEIGHT);
+                }else {
+                    drawImgs(images[1],e.enemyXpos,e.enemyYpos,e.ENEMY_WIDTH,e.ENEMY_HEIGHT);
+                }
+            });
+        }
+        
+        
+        function moveEnemy(){
+            enemies.forEach(function(e,i,array){
+                e.enemyXpos -= e.enemyXspeed; 
+                
+                if( e.enemyXpos < (canvas.width) - canvas.width - 40){
+                e.enemyXpos = canvas.width
+            }
+            
+            if(e.enemyYpos + e.ENEMY_HEIGHT > playerYpos && e.enemyYpos < playerYpos + PlAYER_HEIGHT && e.enemyXpos + ENEMY_WIDTH / 2  > playerXpos && e.enemyXpos < playerXpos + PlAYER_WIDTH * 0.8 ){
+                
+//                playerXpos = 0;
+                   sound.play();
+                    gameRun = false;
+                sound3.play();
+                console.log('score is' + score)
+            }
+                
+            });
         }
         
           
