@@ -1,311 +1,327 @@
 <!doctype html>
 
- 
+
 
 <head>
     <title> Video Game</title>
 </head>
 
- 
+
 
 <body>
     <audio id="sound">
-    <source src="sound.mp3">
+        <source src="sound.mp3">
     </audio>
     <audio id="sound3">
-    <source src="sound3.mp3">
+        <source src="sound3.mp3">
     </audio>
-<!--    sound-->
+    <!--    sound-->
     <canvas id="gameCanvas" width="900" height="720"></canvas>
     <script>
-        
-        
-        
-        
-        
-        
         var canvas, canvasContext;
         window.onload = function() {
-        
+
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
 
- 
+
 
             document.addEventListener('keyup', keyReleased);
             document.addEventListener('keydown', keyPressed);
 
- 
+
 
             setInterval(mainloop, 1000 / 50);
         }
 
- 
+
         var userName = '';
-        while(userName == false || userName == null){
-            userName = prompt('what do you want your name to be?', 'bob')// asking for name
-            if(userName != null)
+        while (userName == false || userName == null) {
+            userName = prompt('what do you want your name to be?', 'bob') // asking for name
+            if (userName != null)
                 pass = true;
         }
-        
-        var speed = 0;
-        
+
+//        var speed = 0;
+
         var difficulty = '';
         var pass = false;
-        
-        while(pass == false){// until happy no exit loop}
-            difficulty = prompt('how hard do you want it?, easy, medium, hard', 'medium');
+
+        while (pass == false) { // until happy no exit loop}
+            difficulty = prompt('what COVID restrictions do you want?, level 2 (easy), level 3 (medium), level 4 (hard). state the level below', 'level 3');
             difficulty = difficulty.toLowerCase()
-            if(difficulty == 'easy' || difficulty == 'medium' || difficulty == 'hard'){
+            if (difficulty == 'level 2' || difficulty == 'level 3' || difficulty == 'level 4') {
                 pass = true;
-                
+                alert('you are COVID-19, rules is to use SPACEBAR to avoid COVID vaccination needles or you will be contained by jacinda, each set of needles you avoid will be 2 cases of COVID-19 you cause. cause as many as possible ')
             }
         }
+
+        if (difficulty == 'level 2') {
+           var enemyXspeed = 3.5;
+        }
         
-        if(difficulty == 'easy'){
-            speed = 4;
+        if (difficulty == 'level 3') {
+        var enemyXspeed = 5;
+            
+            
+        }
+        
+        if(difficulty == 'level 4') {
+             var enemyXspeed = 7;
             
         }
         var playerXpos = 0;
         var playerYpos = 1;
         var playerXspeed = 3;
         var playerYspeed = 20;
-        const PlAYER_HEIGHT = 120;
-        const PlAYER_WIDTH = 110;
+        const PlAYER_HEIGHT = 80;
+        const PlAYER_WIDTH = 90;
         var yVel = 1;
 
-        
+
         var enemyXpos = 710;
         var enemyYpos = -15;
-        var enemyXspeed = 5;
         const ENEMY_HEIGHT = 350;
         const ENEMY_WIDTH = 80;
 
-      
-        var playerjump = -7;
-        
-        
+
+        var playerjump = -4.5;
+
+
         const SPACE = 32;
         var spacePressed = false;
 
         var object = new Image();
         object.src = 'syringe2.png';
-        
+
         var virus = new Image();
         virus.src = 'covid.png';
-        
-        var BG = new Image() ;
+
+        var BG = new Image();
         BG.src = 'Corona.png';
-        
-        var End = new Image() ;
-        End.src = 'jacinda.png';
+
+        var End = new Image();
+        End.src = 'aunt.jpg';
         var EndXpos = 0;
         var EndYpos = 0;
-        
-        
-        var BGXspeed = 1;
+
+
+        var BGXspeed = 1.5;
         var BGXpos2 = 0;
         var BGXpos = 0;
         var BGYpos = 0;
-        
+
         var syringe = new Image();
         syringe.src = 'syringe.png'
-        
-        var images = [object,syringe];
-        
 
-        
+        var images = [object, syringe];
+
+
+
         var settingUp = true;
         var gameRun = true;
-        
-        
+
+
         var score = 0;
+
         function mainloop() {
 
-            if(gameRun){
-                
-                if(settingUp){
-                    playerXpos = PlAYER_WIDTH * 2; 
-                    
-                    for(var i = 0; i < 10; i++){
+            if (gameRun) {
+
+                if (settingUp) {
+                    playerXpos = PlAYER_WIDTH * 2;
+
+                    for (var i = 0; i < 10; i++) {
                         makenemy();
                     }
-                    
+
                     settingUp = false;
                 }
-                drawImgs(BG, BGXpos, 0, canvas.width*2, canvas.height);
-                drawImgs(BG, BGXpos2, 0, canvas.width*2, canvas.height);
-                drawImgs(virus,playerXpos, playerYpos, PlAYER_WIDTH, PlAYER_HEIGHT);
-//                drawImgs(images[0],enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
+                drawImgs(BG, BGXpos, 0, canvas.width * 2, canvas.height);
+                drawImgs(BG, BGXpos2, 0, canvas.width * 2, canvas.height);
+                drawImgs(virus, playerXpos, playerYpos, PlAYER_WIDTH, PlAYER_HEIGHT);
+                //                drawImgs(images[0],enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
                 playerMove();
 
-//                enemyMove();
+                //                enemyMove();
                 backgroundMove();
                 drawEnemy();
                 moveEnemy();
-            }
-            else {
+            } else {
                 drawImgs(End, EndXpos, EndYpos, canvas.width, canvas.height);
+                colorText('Well done NZ we have elimated the virus, we had ' + score + ' cases of COVID-19 during the outbreak' , 10,600,'24px impact','white');
             }
         } // end func
 
- 
+
 
         function colorRect(x, y, w, h, c) {
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x, y, w, h);
         } // end func
-
-        function drawImgs(src,x,y,w,h){
-            canvasContext.drawImage(src,x,y,w,h);
+        
+        function colorText(msg, x, y, f, c) {
+            canvasContext.font = f;
+      canvasContext.fillStyle = c;
+      canvasContext.fillText(msg, x, y);
         }
         
-        function backgroundMove(){
-            if(BGXpos + canvas.width < (canvas.width) - canvas.width){
+        function drawImgs(src, x, y, w, h) {
+            canvasContext.drawImage(src, x, y, w, h);
+        }
+
+        function backgroundMove() {
+            if (BGXpos + canvas.width < (canvas.width) - canvas.width) {
                 BGXpos = canvas.width;
             }
-            if(BGXpos == (canvas.width) - canvas.width){
-               BGXpos2 = canvas.width * .772;
+            if (BGXpos == (canvas.width) - canvas.width) {
+                BGXpos2 = canvas.width * .772;
             }
             BGXpos -= BGXspeed;
             BGXpos2 -= BGXspeed;
-            
+
         }
-        
-        function enemyMove(){
-            
+
+        function enemyMove() {
+
             enemyXpos -= enemyXspeed;
-            
-            if( enemyXpos < (canvas.width) - canvas.width - 40){
-                enemyXpos = canvas.width
-            }
-            
-            if(enemyYpos + ENEMY_HEIGHT > playerYpos && enemyYpos < playerYpos + PlAYER_HEIGHT && enemyXpos + ENEMY_WIDTH / 2  > playerXpos && enemyXpos < playerXpos + PlAYER_WIDTH * 0.8 ){
+
+            if (enemyXpos < (canvas.width) - canvas.width - 40) {
+                enemyXpos = canvas.width;
                 
-//                playerXpos = 0;
-                   sound.play();
-                    gameRun = false;
+                
+            }
+
+            if (enemyYpos + ENEMY_HEIGHT > playerYpos && enemyYpos < playerYpos + PlAYER_HEIGHT && enemyXpos + ENEMY_WIDTH / 2 > playerXpos && enemyXpos < playerXpos + PlAYER_WIDTH * 0.8) {
+
+                //                playerXpos = 0;
+                sound.play();
+                gameRun = false;
                 sound3.play();
                 console.log('score is' + score)
             }
-            
-            
+
+
         }
 
         var gravity = 0.5;
-        
-        
+
+
         function playerMove() {
             playerYpos += yVel;
             yVel += gravity;
             if (spacePressed)
                 yVel = playerjump;
-//                playerXpos = canvas.width / 6;      
-            
-            if(playerYpos + PlAYER_HEIGHT > canvas.height){
+            //                playerXpos = canvas.width / 6;      
+
+            if (playerYpos + PlAYER_HEIGHT > canvas.height) {
                 yVel = playerjump;
             }
-            if(playerYpos < (canvas.height) - canvas.height){
+            if (playerYpos < (canvas.height) - canvas.height) {
                 yVel = gravity;
-                
-           }
-        }   
-          //end func
+
+            }
+        }
+        //end func
         function keyPressed(evt) {
             console.log(evt.keyCode)
             if (evt.keyCode == SPACE) {
                 spacePressed = true;
-                
-                 (evt.keyCode == 83) 
+
+                (evt.keyCode == 83)
                 KeyPressed = true;
-//               alert('hola')
+                //               alert('hola')
             }
-            
+
         }
-           //end func
+        //end func
         function keyReleased(evt) {
             if (evt.keyCode == SPACE) {
                 spacePressed = false;
 
- 
 
-                 (evt.keyCode == 83) 
+
+                (evt.keyCode == 83)
                 KeyPressed = false;
-               
+
             }
         }
-         var enemyCounter = 0;
+        var enemyCounter = 0;
         var setCounter = 0;
         var enemies = [];
-        
-        
-        var needleCount = 0; 
-        
-        
-    function makenemy(){
-        const ENEMY_HEIGHT = 350 / 2;
-        const ENEMY_WIDTH = 80 / 2;
-        var spacer = Math.floor(Math.random()*(canvas.height * 0.2));
-        var enemyXpos = canvas.width + needleCount * (ENEMY_WIDTH * 2);
-        var enemyYpos = 0;
-        
-        if(needleCount%2 == 0){
-            enemyYpos = 0 + spacer; 
-        } else {
-            enemyYpos = canvas.height - ENEMY_HEIGHT - spacer;
-        }
-        
-        var enemyXspeed = 5;
-        
-        var enemy = {
-            enemyXpos: enemyXpos,
-            enemyYpos: enemyYpos,
-            ENEMY_WIDTH: ENEMY_WIDTH,
-            ENEMY_HEIGHT: ENEMY_HEIGHT,
-            enemyXspeed: enemyXspeed
-        }
-        
-        needleCount++;
-        
-        enemies.push(enemy);
-    }                
+
+
+        var needleCount = 0;
+
+
+        function makenemy() {
+            const ENEMY_HEIGHT = 350 / 2;
+            const ENEMY_WIDTH = 80 / 2;
+            var spacer = Math.floor(Math.random() * (canvas.height * 0.2));
+            var enemyXpos = canvas.width + needleCount * (ENEMY_WIDTH * 2);
+            var enemyYpos = 0;
+
+            if (needleCount % 2 == 0) {
+                enemyYpos = 0 + spacer;
+            } else {
+                enemyYpos = canvas.height - ENEMY_HEIGHT - spacer;
+            }
+
+//            var enemyXspeed = 5;
+
+            var enemy = {
+                enemyXpos: enemyXpos,
+                enemyYpos: enemyYpos,
+                ENEMY_WIDTH: ENEMY_WIDTH,
+                ENEMY_HEIGHT: ENEMY_HEIGHT,
+                enemyXspeed: enemyXspeed
+            }
+
+            needleCount++;
             
-        function drawEnemy(){
-            enemies.forEach(function(e,i,array){
-                if(i%2 == 0){
-                    drawImgs(images[0],e.enemyXpos,e.enemyYpos,e.ENEMY_WIDTH,e.ENEMY_HEIGHT);
-                }else {
-                    drawImgs(images[1],e.enemyXpos,e.enemyYpos,e.ENEMY_WIDTH,e.ENEMY_HEIGHT);
+            enemies.push(enemy);
+        }
+
+        function drawEnemy() {
+            enemies.forEach(function(e, i, array) {
+                if (i % 2 == 0) {
+                    drawImgs(images[0], e.enemyXpos, e.enemyYpos, e.ENEMY_WIDTH, e.ENEMY_HEIGHT);
+                } else {
+                    drawImgs(images[1], e.enemyXpos, e.enemyYpos, e.ENEMY_WIDTH, e.ENEMY_HEIGHT);
                 }
             });
         }
-        
-        
-        function moveEnemy(){
-            enemies.forEach(function(e,i,array){
-                e.enemyXpos -= e.enemyXspeed; 
-                
-                if( e.enemyXpos < (canvas.width) - canvas.width - 40){
-                e.enemyXpos = canvas.width
-            }
-            
-            if(e.enemyYpos + e.ENEMY_HEIGHT > playerYpos && e.enemyYpos < playerYpos + PlAYER_HEIGHT && e.enemyXpos + ENEMY_WIDTH / 2  > playerXpos && e.enemyXpos < playerXpos + PlAYER_WIDTH * 0.8 ){
-                
-//                playerXpos = 0;
-                   sound.play();
+
+
+        function moveEnemy() {
+            enemies.forEach(function(e, i, array) {
+                e.enemyXpos -= e.enemyXspeed;
+
+                if (e.enemyXpos < (canvas.width) - canvas.width - 40) {
+                    e.enemyXpos = canvas.width
+                    score++;
+                    console.log('you have caused ' + score + ' cases of COVID-19')
+                    
+                }
+
+                if (e.enemyYpos + e.ENEMY_HEIGHT > playerYpos && e.enemyYpos < playerYpos + PlAYER_HEIGHT && e.enemyXpos + ENEMY_WIDTH / 2 > playerXpos && e.enemyXpos < playerXpos + PlAYER_WIDTH * 0.8) {
+
+                    //                playerXpos = 0;
+                    sound.play();
                     gameRun = false;
-                sound3.play();
-                console.log('score is' + score)
-            }
-                
+                    sound3.play();
+//                    console.log('score is' + score)
+                }
+
             });
         }
-        
-          
-         
-      //end func
+
+
+
+        //end func
+
     </script>
 
- 
+
 
 </body>
