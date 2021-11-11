@@ -39,7 +39,7 @@
 
         var userName = '';
         while (userName == false || userName == null) {
-            userName = prompt('what do you want your username to be?', 'bob') // asking for username
+            userName = prompt('what do you want the name of your variant of covid to be?', 'delta') // asking for username
             if (userName != null)
                 pass = true;
         }
@@ -146,6 +146,7 @@
                 }
                 drawImgs(BG, BGXpos, 0, canvas.width * 2, canvas.height);
                 drawImgs(BG, BGXpos2, 0, canvas.width * 2, canvas.height);
+                colorText(  'there are ' + score + ' current cases of ' + userName , 10, 40, '28px impact', 'black');
                 drawImgs(virus, playerXpos, playerYpos, PlAYER_WIDTH, PlAYER_HEIGHT);  // images
                 //                drawImgs(images[0],enemyXpos,enemyYpos,ENEMY_WIDTH,ENEMY_HEIGHT);
                 playerMove();
@@ -156,7 +157,7 @@
                 moveEnemy();
             } else {
                 drawImgs(End, EndXpos, EndYpos, canvas.width, canvas.height);
-                colorText(  userName + ' elimated the virus for NZ, we had ' + score + ' cases of COVID-19 during the outbreak', 10, 600, '24px impact', 'white');   // if game has ended. for game end screen
+                colorText(  userName + ' caused ' + score + ' cases of COVID-19 during the outbreak, but we have eliminated it', 10, 600, '24px impact', 'white');   // if game has ended. for game end screen
             }
         } // end func
 
